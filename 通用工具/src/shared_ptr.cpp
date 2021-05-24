@@ -87,5 +87,9 @@ int main()
 
 	foo();
 
+	/*std::shared_ptr<int> p(new int[10], [](int *p) { delete p; });*/
+	std::shared_ptr<int> p(new int[10], std::default_delete<int[]>());
+	*(p.get()) = 1;
+
 	return 0;
 }
