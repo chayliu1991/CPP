@@ -9,10 +9,10 @@
 #include <functional>
 
 template <typename C>
-void PRINT_ELEMENTS(const C& c, const std::string& prefix)
+void PRINT_ELEMENTS(const C &c, const std::string &prefix)
 {
 	std::cout << prefix;
-	for (auto const& elem : c)
+	for (auto const &elem : c)
 		std::cout << elem << " ";
 	std::cout << std::endl;
 }
@@ -45,19 +45,21 @@ struct Person
 	std::string last_name;
 };
 
-bool person_sort_criterion(const Person& p1, const Person& p2)
+bool person_sort_criterion(const Person &p1, const Person &p2)
 {
 	return (p1.last_name < p2.last_name) || ((p1.last_name == p2.last_name) && (p1.first_name < p2.first_name));
 }
 
-class  Pred
+class Pred
 {
 private:
 	int x;
 	int y;
+
 public:
 	Pred(int xx, int yy) : x(xx), y(yy)
-	{}
+	{
+	}
 
 	bool operator()(int i) const
 	{
@@ -69,9 +71,10 @@ class AddValue
 {
 private:
 	int the_value;
+
 public:
-	AddValue(int v) :the_value(v) {}
-	void operator()(int& elem) const
+	AddValue(int v) : the_value(v) {}
+	void operator()(int &elem) const
 	{
 		elem += the_value;
 	}
@@ -106,7 +109,7 @@ int main()
 	}
 
 	{
-		std::set<int> coll{ 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+		std::set<int> coll{1, 2, 3, 4, 5, 6, 7, 8, 9};
 		std::copy(coll.cbegin(), coll.cend(), std::ostream_iterator<int>(std::cout, " "));
 		std::cout << std::endl;
 		int num = coll.erase(3);
@@ -116,7 +119,7 @@ int main()
 	}
 
 	{
-		std::set<int> coll{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+		std::set<int> coll{1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 		PRINT_ELEMENTS(coll, "original:");
 
 		std::vector<int> coll2;
@@ -125,7 +128,7 @@ int main()
 	}
 
 	{
-		std::list<int> coll{ 24, 25, 26, 27, 28, 29, 30 };
+		std::list<int> coll{24, 25, 26, 27, 28, 29, 30};
 		auto pos = std::find_if(coll.cbegin(), coll.cend(), is_prime);
 		if (pos != coll.end())
 		{
@@ -141,13 +144,15 @@ int main()
 	}
 
 	{
-		std::vector<int> coll{ 1,3,5,7,9 };
-		std::transform(coll.begin(), coll.end(), coll.begin(), [](int x) {return x * x * x; });
+		std::vector<int> coll{1, 3, 5, 7, 9};
+		std::transform(coll.begin(), coll.end(), coll.begin(), [](int x)
+					   { return x * x * x; });
 		PRINT_ELEMENTS(coll, "x*x*x:");
 
-		std::deque<int> coll2{ 1,3,19,5,13,7,11,2,17 };
+		std::deque<int> coll2{1, 3, 19, 5, 13, 7, 11, 2, 17};
 		int x = 5, y = 12;
-		auto pos = std::find_if(coll2.begin(), coll2.end(), [=](int i) {return i > x && i < y; });
+		auto pos = std::find_if(coll2.begin(), coll2.end(), [=](int i)
+								{ return i > x && i < y; });
 		std::cout << "first element > 5 and < 12: " << *pos << std::endl;
 
 		//@ 使用函数对象比较丑陋
@@ -155,12 +160,10 @@ int main()
 		std::cout << "first element > 5 and < 12: " << *pos1 << std::endl;
 
 		//@ bind 使用也很麻烦
-		auto pos2 = std::find_if(coll2.begin(), coll2.end(), std::bind(std::logical_and<bool>(),
-			std::bind(std::greater<int>(), std::placeholders::_1, x),
-			std::bind(std::less<int>(), std::placeholders::_1, y)));
+		auto pos2 = std::find_if(coll2.begin(), coll2.end(), std::bind(std::logical_and<bool>(), std::bind(std::greater<int>(), std::placeholders::_1, x), std::bind(std::less<int>(), std::placeholders::_1, y)));
 		std::cout << "first element > 5 and < 12: " << *pos2 << std::endl;
 
-		std::list<int> coll3{ 1,2,3,4,5,6,7,8,9 };
+		std::list<int> coll3{1, 2, 3, 4, 5, 6, 7, 8, 9};
 		PRINT_ELEMENTS(coll3, "original:");
 		std::for_each(coll3.begin(), coll3.end(), AddValue(10));
 		PRINT_ELEMENTS(coll3, "add 10:");
@@ -171,7 +174,7 @@ int main()
 	}
 
 	{
-		std::deque<int> coll{ 1,2,3,5,7,11,13,17,19 };
+		std::deque<int> coll{1, 2, 3, 5, 7, 11, 13, 17, 19};
 		PRINT_ELEMENTS(coll, "original:");
 		std::transform(coll.begin(), coll.end(), coll.begin(), std::negate<int>());
 		PRINT_ELEMENTS(coll, "negated:");
@@ -180,12 +183,11 @@ int main()
 	}
 
 	{
-		std::set<int, std::greater<int>> coll{ 1,2,3,4,5,6,7,8,9 };
-		PRINT_ELEMENTS(coll,"coll original:");
+		std::set<int, std::greater<int>> coll{1, 2, 3, 4, 5, 6, 7, 8, 9};
+		PRINT_ELEMENTS(coll, "coll original:");
 		std::deque<int> coll2;
-		std::transform(coll.cbegin(), coll.cend(),std::back_inserter(coll2),std::bind(std::multiplies<int>(),std::placeholders::_1,10));
+		std::transform(coll.cbegin(), coll.cend(), std::back_inserter(coll2), std::bind(std::multiplies<int>(), std::placeholders::_1, 10));
 		PRINT_ELEMENTS(coll2, "multiply 10:");
-
 	}
 
 	return 0;
