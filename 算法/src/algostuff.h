@@ -13,7 +13,7 @@
 #include <iterator>
 #include <algorithm>
 #include <numeric>
-
+#include <functional>
 #include <iostream>
 
 template <typename T>
