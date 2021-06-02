@@ -33,5 +33,9 @@ int main()
         PRINT_ELEMENTS(c2, "c2 is:		");
     }
 
+    {
+        std::copy(std::istream_iterator<std::string>(std::cin), std::istream_iterator<std::string>(), std::ostream_iterator<std::string>(std::cout, " "));
+    }
+
     return 0;
 }
